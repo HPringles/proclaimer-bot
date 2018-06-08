@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "main": "app.js",
+  "author": "Harry Ingles(HPringles)",
+  "license": "ISC",
+  "name": "proclaimer-bot",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:HPringles/proclaimer-bot.git"
+  },
+  "dependencies": {}
+}

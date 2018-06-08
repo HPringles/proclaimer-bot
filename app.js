@@ -1,0 +1,1 @@
+// Autgenerated File by Ginit - The solution to all your git init/npm init/yarn init needs
