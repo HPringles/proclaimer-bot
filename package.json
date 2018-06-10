@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "index.js",
   "author": "Harry Ingles(HPringles)",
   "license": "ISC",
   "name": "proclaimer-bot",
@@ -8,5 +8,19 @@
     "type": "git",
     "url": "git@github.com:HPringles/proclaimer-bot.git"
   },
-  "dependencies": {}
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "enmap": "^2.6.2",
+    "enmap-mongo": "^2.0.1",
+    "mongodb": "^3.0.10",
+    "mongoose": "^5.1.4",
+    "ms": "^2.1.1"
+  },
+  "devDependencies": {
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0"
+  }
 }

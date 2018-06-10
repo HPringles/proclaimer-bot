@@ -1,0 +1,5 @@
+{ 
+    "dbaddr" : "LOCAL OR EXTERNAL MONGODB DB ADDRESS GOES HERE!",
+    "token"  : "THISISWHEREYOURBOTTOKENGOES",
+    "prefix" : "+"
+  }
