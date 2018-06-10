@@ -4,7 +4,6 @@ const fs = require('fs')
 const EnmapMongo = require('enmap-mongo')
 const config = require('./config.json')
 
-
 const provider = new EnmapMongo({
   name: 'proclaimer-test',
   dbName: config.dbname,
@@ -15,11 +14,13 @@ const provider = new EnmapMongo({
 const client = new Discord.Client()
 client.config = config
 client.proclaimerDb = new Enmap({provider: provider})
-client.proclaimerDb.defer.then(()=>{
+client.proclaimerDb.defer.then(() => {
   if (!client.proclaimerDb.has('notifs')) {
-  client.proclaimerDb.set('notifs', []);
-}
+    client.proclaimerDb.set('notifs', [])
+  }
 })
+
+client.numNotifChecks = 0
 
 fs.readdir('./events/', (err, files) => {
   if (err) return console.error(err)
@@ -33,7 +34,7 @@ fs.readdir('./events/', (err, files) => {
 client.commands = new Enmap()
 
 fs.readdir('./commands/', (err, files) => {
-  if (err) return console.error(err);
+  if (err) return console.error(err)
   files.forEach(file => {
     if (!file.endsWith('.js')) return
     let props = require(`./commands/${file}`)
@@ -45,7 +46,7 @@ fs.readdir('./commands/', (err, files) => {
 client.notifTypes = new Enmap()
 
 fs.readdir('./notifs/', (err, files) => {
-  if (err) return console.error(err);
+  if (err) return console.error(err)
   files.forEach(file => {
     if (!file.endsWith('.js')) return
     let props = require(`./notifs/${file}`)
@@ -54,7 +55,4 @@ fs.readdir('./notifs/', (err, files) => {
   })
 })
 
-
-
 client.login(config.token)
-

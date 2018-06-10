@@ -5,10 +5,9 @@ module.exports.run = (client) => {
 
   notifs.forEach(async (notif) => {
     if (notif.type === 'finished') {
-      console.log(notifs)
       notifs.splice(notifs.indexOf(notif), 1)
-      console.log(notifs)
-      console.log('spliced, maybe?')
+    } else if (notif.mod && client.numNotifChecks % notif.mod !== 0) {
+      return false
     } else {
       const notifFunc = client.notifTypes.get(notif.type)
 

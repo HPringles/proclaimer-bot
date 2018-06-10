@@ -1,17 +1,24 @@
+const Discord = require('discord.js')
 const ms = require('ms')
 
 function isValidDate (d) {
-  if (d.getTime() === d.getTime()) return true
+  if (d.getTime() === d.getTime()) return true // eslint-disable-line no-self-compare
   return false
 }
 
 module.exports = {
+  helpdata: {
+    desc: 'Creates a notification after a given amount of time',
+    options: ['**timeToNotify:**` number followed by s,m,h or d` - minimum 1m/60s', '**channel(optional):** `a mention for the channel to send to`', '**message:** `message to send as the reminder`'],
+    usage: 'addnotif time 30m #general This is a notification'
+  },
   create: (client, message, args) => {
     // Adds a new notification setting to the server, with the params included(tume measured in seconds)
-    if (args[1] && ((args[2] && args[2].startsWith('#') && args[3]) || (args[3] && !args[3].startsWith('#')))) {
+    if (args[1] && ((args[2] && args[2].startsWith('#') && args[3]) || (args[2] && !args[2].startsWith('#')))) {
       let argone = args[1].toLowerCase()
 
       let interval = ms(argone)
+      if (interval < 60000) return message.reply('**ERROR** minimum remind time is 1 minute')
       let remindTime = new Date(Date.now() + interval)
       if (!isValidDate(remindTime)) return message.reply('Invalid arguments - specifically the date is invalid or in the incorrect location')
       // console.log(typeof remindTime === 'date')
@@ -24,7 +31,7 @@ module.exports = {
         args.splice(0, 2)
         chanMessage = args.join(' ')
       } else {
-        args.splice(0, 3)
+        args.splice(0, 2)
         chanMessage = args.join(' ')
       }
 
@@ -41,12 +48,14 @@ module.exports = {
         remindTime: remindTime,
         message: chanMessage,
         channel: channel.id,
-        guild: message.guild.id
+        guild: message.guild.id,
+        author: message.author.id
 
       }
       client.proclaimerDb.push('notifs', notifObj, true)
 
-      message.channel.send(`✅ Added notification. I'll remind you at ${new Date(remindTime).toLocaleTimeString()}`)
+      // message.channel.send(`✅ Added notification. I'll remind you at ${new Date(remindTime).toLocaleTimeString()}`)
+      message.react('✅')
     } else { message.reply('Unable to create reminder, not enough/incorrect arguments') }
   },
   run: (client, notif) => {
@@ -60,5 +69,12 @@ module.exports = {
       client.channels.get(notif.channel).send(`✅  I'm reminding you! Remember: ${notif.message}!`)
       notif.type = 'finished'
     }
+  },
+  getDetailsEmbed: (client, n) => {
+    return new Discord.RichEmbed()
+      .setTitle('Notif - Time')
+      .addField('Time', n.remindTime.toLocaleTimeString())
+      .addField('Channel', client.channels.get(n.channel).name)
+      .addField('Message', n.message)
   }
 }
