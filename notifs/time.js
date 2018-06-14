@@ -42,7 +42,6 @@ module.exports = {
       if (channel === undefined) {
         channel = message.channel
       }
-      
 
       let notifObj = {
         type: 'time',
@@ -61,8 +60,6 @@ module.exports = {
   },
   run: (client, notif) => {
     if (notif.remindTime <= Date.now()) {
-      
-
       client.channels.get(notif.channel).send(`✅  I'm reminding you! Remember: ${notif.message}!`)
       notif.type = 'finished'
     }

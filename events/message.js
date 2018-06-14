@@ -12,7 +12,7 @@ module.exports = (client, message) => {
     }
 
     // Ignore messages not starting with the prefix (in config.json)
-    if (message.content.indexOf(client.config.prefix) !== 0) return
+    if (message.content.indexOf(client.proclaimerDb.get('guilds').find(g => { return g.id === message.guild.id }).prefix) !== 0) return
 
     // Our standard argument/command name definition.
     const args = message.content.slice(client.config.prefix.length).trim().split(/ +/g)

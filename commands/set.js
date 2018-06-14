@@ -1,25 +1,25 @@
 const Discord = require('discord.js')
 
 module.exports = {
-  run: function (client, message, args) {
-    const guildData = this.checkSettingsExistForGuild(client, message.guild)
+  run: async function (client, message, args) {
+    const guildData = await this.checkSettingsExistForGuild(client, message.guild)
     if (args[0]) {
       const setType = client.settingsCmds.get(args[0].toLowerCase())
 
       if (!setType) return message.channel.send(`**ERROR** Setting does not exist or cannot be changed - use \`${guildData.prefix}set\` to get all settings `)
-      setType.create(client, message, args)
+      setType.run(client, message, args)
     } else {
-      
-      let fieldArr = []
       console.log(guildData)
-      for (let p in guildData) {
-        console.log(p)
-        fieldArr.push({name: p, value: guildData.toString()})
-      }
-      let embed = new Discord.RichEmbed().setTitle('Settings')
-      embed.fields = fieldArr
-      message.channel.send({embed})
 
+      let embed = new Discord.RichEmbed().setTitle('Settings')
+      for (let p in guildData) {
+        if (p === 'defaultChannel') {
+          guildData[p] = '#' + message.guild.channels.get(guildData[p]).name
+        }
+        if (!guildData[p].length) { guildData[p] = 'None' }
+        await embed.addField(p, guildData[p].toString())
+      }
+      message.channel.send({embed})
     }
   },
   checkSettingsExistForGuild: async function (client, guild) {
@@ -35,7 +35,7 @@ module.exports = {
       await guilds.push(guildData)
       client.proclaimerDb.set('guilds', guilds)
     }
-    
+
     return guildData
   }
 }

@@ -4,9 +4,8 @@ module.exports = {
 
   },
   deleteNotif: function (client, n) {
-    let notifs = client.proclaimerDb.get('notifs').filter(no => { return n.author !== no.author})
+    let notifs = client.proclaimerDb.get('notifs').filter(no => { return n.author !== no.author })
     console.log(client.proclaimerDb.set('notifs', notifs))
-
   },
   create: (client, message, args) => {
     if (((args[1] && args[1].startsWith('#')) && args[2]) || args[1]) {
@@ -43,7 +42,7 @@ module.exports = {
     let words = []
     if (wordsObjArr.length === 0) { return this.deleteNotif(client, n) }
     wordsObjArr.forEach((w) => {
-      words.push( wordsObjArr.indexOf(w) + ": " + w.word )
+      words.push(wordsObjArr.indexOf(w) + ': ' + w.word)
     })
 
     return new Discord.RichEmbed()

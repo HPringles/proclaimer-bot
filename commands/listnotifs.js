@@ -18,7 +18,7 @@ module.exports = {
       if (!notifType) return
       const embed = notifType.getDetailsEmbed(client, n)
       if (!embed) return
-      embed.addField('ID', userNotifs.indexOf(n)).setFooter('ProclaimerBot - notifying you since ').setTimestamp().setAuthor(`ProclaimerBot - ${n.guild !== "None" ? client.guilds.get(n.guild).name : "DM"}`)
+      embed.addField('ID', userNotifs.indexOf(n)).setFooter('ProclaimerBot - notifying you since ').setTimestamp().setAuthor(`ProclaimerBot - ${n.guild !== 'None' ? client.guilds.get(n.guild).name : 'DM'}`)
 
       await message.channel.send({embed})
     })

@@ -13,9 +13,9 @@ notifs:
 
 
 Bot settings:
-  ☐ implement the get settings method(+set)
+  ✔ implement the get settings method(+set) @done (2018-6-14 15:50:36)
   ☐ implement methods to set the following settings.
-    ☐ prefix
-    ☐ default channel
+    ✔ prefix @done (2018-6-14 15:50:23)
+    ✔ default channel @done (2018-6-14 16:24:17)
     ☐ admin role(s)
   ☐ implement a reset settings button(reset to default - no default channel, no admin roles, prefix of +)
