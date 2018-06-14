@@ -18,7 +18,16 @@ client.proclaimerDb.defer.then(() => {
   if (!client.proclaimerDb.has('notifs')) {
     client.proclaimerDb.set('notifs', [])
   }
+  if (!client.proclaimerDb.has('messagepatterns')) {
+    client.proclaimerDb.set('messagepatterns', [])
+  }
+  if (!client.proclaimerDb.has('guilds')) {
+    client.proclaimerDb.set('guilds', [])
+  }
+  
 })
+
+
 
 client.numNotifChecks = 0
 
@@ -52,6 +61,18 @@ fs.readdir('./notifs/', (err, files) => {
     let props = require(`./notifs/${file}`)
     let notifName = file.split('.')[0]
     client.notifTypes.set(notifName, props)
+  })
+})
+
+client.settingsCmds = new Enmap()
+
+fs.readdir('./settings/', (err, files) => {
+  if (err) return console.error(err)
+  files.forEach(file => {
+    if (!file.endsWith('.js')) return
+    let props = require(`./settings/${file}`)
+    let settingName = file.split('.')[0]
+    client.settingsCmds.set(settingName, props)
   })
 })
 

@@ -8,6 +8,8 @@ module.exports.run = (client) => {
       notifs.splice(notifs.indexOf(notif), 1)
     } else if (notif.mod && client.numNotifChecks % notif.mod !== 0) {
       return false
+    } else if (notif.type === 'messagepattern') {
+
     } else {
       const notifFunc = client.notifTypes.get(notif.type)
 

@@ -42,13 +42,14 @@ module.exports = {
       if (channel === undefined) {
         channel = message.channel
       }
+      
 
       let notifObj = {
         type: 'time',
         remindTime: remindTime,
         message: chanMessage,
         channel: channel.id,
-        guild: message.guild.id,
+        guild: message.guild ? message.guild.id : 'None',
         author: message.author.id
 
       }
@@ -60,11 +61,7 @@ module.exports = {
   },
   run: (client, notif) => {
     if (notif.remindTime <= Date.now()) {
-      console.log(notif)
-      console.log(notif.remindTime)
-      console.log(Date.now())
-      // console.log("channels")
-      // console.log(notif.channel)
+      
 
       client.channels.get(notif.channel).send(`✅  I'm reminding you! Remember: ${notif.message}!`)
       notif.type = 'finished'
@@ -74,7 +71,7 @@ module.exports = {
     return new Discord.RichEmbed()
       .setTitle('Notif - Time')
       .addField('Time', n.remindTime.toLocaleTimeString())
-      .addField('Channel', client.channels.get(n.channel).name)
+      .addField('Channel', client.channels.get(n.channel).name || 'DM')
       .addField('Message', n.message)
   }
 }
