@@ -14,7 +14,7 @@ module.exports = {
   },
   create: (client, message, args) => {
     // Adds a new notification setting to the server, with the params included(tume measured in seconds)
-    if (args[1] && ((args[2] && args[2].startsWith('#') && args[3]) || (args[2] && !args[2].startsWith('#')))) {
+    if (args[1] && ((args[2] && (args[2].startsWith('#') || args[2].toLowerCase() === 'dm') && args[3]) || (args[2] && (!args[2].startsWith('#') || args[2].toLowerCase() === 'dm' || !args[2].toLowerCase() === 'dm')))) {
       let argone = args[1].toLowerCase()
 
       let interval = ms(argone)
@@ -28,7 +28,11 @@ module.exports = {
       if (args[2].startsWith('#')) {
         console.log('starts with #')
         channel = message.mentions.channels.first()
-        args.splice(0, 2)
+        args.splice(0, 3)
+        chanMessage = args.join(' ')
+      } else if (args[2].toLowerCase() === 'dm') {
+        channel = 'dm'
+        args.splice(0, 3)
         chanMessage = args.join(' ')
       } else {
         args.splice(0, 2)
@@ -47,7 +51,7 @@ module.exports = {
         type: 'time',
         remindTime: remindTime,
         message: chanMessage,
-        channel: channel.id,
+        channel: channel === 'dm' ? channel : channel.id,
         guild: message.guild ? message.guild.id : 'None',
         author: message.author.id
 
@@ -58,9 +62,15 @@ module.exports = {
       message.react('✅')
     } else { message.reply('Unable to create reminder, not enough/incorrect arguments') }
   },
-  run: (client, notif) => {
+  run: async (client, notif) => {
     if (notif.remindTime <= Date.now()) {
-      client.channels.get(notif.channel).send(`✅  I'm reminding you! Remember: ${notif.message}!`)
+      if (notif.channel === 'dm') {
+        if (!client.users.get(notif.author).dmChannel) { await client.users.get(notif.author).createDM() }
+        client.users.get(notif.author).dmChannel.send(`✅  I'm reminding you! Remember: ${notif.message}!`)
+      } else {
+        client.channels.get(notif.channel).send(`✅  I'm reminding you! Remember: ${notif.message}!`)
+      }
+
       notif.type = 'finished'
     }
   },
@@ -68,7 +78,7 @@ module.exports = {
     return new Discord.RichEmbed()
       .setTitle('Notif - Time')
       .addField('Time', n.remindTime.toLocaleTimeString())
-      .addField('Channel', client.channels.get(n.channel).name || 'DM')
+      .addField('Channel', client.channels.get(n.channel) ? client.channels.get(n.channel).name : 'DM')
       .addField('Message', n.message)
   }
 }

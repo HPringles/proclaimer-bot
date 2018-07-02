@@ -12,8 +12,7 @@ module.exports = {
       const authorId = message.author.id
       let userpatterns = allpatterns.filter((n) => { return n.author === authorId })
       const pattern = userpatterns[parseInt(args[0])]
-      console.log(message.author.id)
-      console.log(pattern.author)
+      
       if (message.author.id !== pattern.author) {
         message.react('❌')
         return message.channel.send('**ERROR: NOT AUTHORISED**')

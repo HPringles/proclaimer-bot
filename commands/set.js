@@ -1,41 +1,56 @@
 const Discord = require('discord.js')
 
 module.exports = {
+  noDM: true,
+  requiresAdmin: true,
   run: async function (client, message, args) {
-    const guildData = await this.checkSettingsExistForGuild(client, message.guild)
+    let guildData = await this.checkSettingsExistForGuild(client, message.guild)
+
     if (args[0]) {
       const setType = client.settingsCmds.get(args[0].toLowerCase())
 
       if (!setType) return message.channel.send(`**ERROR** Setting does not exist or cannot be changed - use \`${guildData.prefix}set\` to get all settings `)
-      setType.run(client, message, args)
+      return setType.run(client, message, args)
     } else {
-      console.log(guildData)
-
       let embed = new Discord.RichEmbed().setTitle('Settings')
+
       for (let p in guildData) {
-        if (p === 'defaultChannel') {
-          guildData[p] = '#' + message.guild.channels.get(guildData[p]).name
+        let fieldData = guildData[p]
+        if (p === 'defaultChannel' && (guildData[p] !== undefined || guildData[p] !== null)) {
+          let chan = await message.guild.channels.get(guildData[p])
+          fieldData = chan ? chan.name : 'Not Set'
+        } else if (p === 'defaultChannel') {
+          fieldData = 'Not Set'
         }
-        if (!guildData[p].length) { guildData[p] = 'None' }
-        await embed.addField(p, guildData[p].toString())
+        if (p === 'adminRoles' && guildData[p].length === 0) { fieldData = 'None set' }
+        if (p === 'adminRoles' && guildData[p].length > 0) {
+          fieldData = []
+          for (let r in guildData[p]) {
+            fieldData[r] = await message.guild.roles.get(guildData[p][r])
+          }
+        }
+
+        await embed.addField(p, fieldData)
       }
-      message.channel.send({embed})
+      console.log(args)
+      return message.channel.send({ embed })
     }
   },
-  checkSettingsExistForGuild: async function (client, guild) {
+  checkSettingsExistForGuild: function (client, guild) {
     let guilds = client.proclaimerDb.get('guilds')
-    let guildData = client.proclaimerDb.get('guilds').find(g => { return g.id === guild.id })
-    if (!guildData) {
+    let guildData = guilds.find(g => { return g.id === guild.id })
+    if (!guildData.id) {
       guildData = {
         id: guild.id,
         adminRoles: [],
         prefix: client.config.prefix,
         defaultChannel: undefined
       }
-      await guilds.push(guildData)
+      guilds.push(guildData)
       client.proclaimerDb.set('guilds', guilds)
     }
 
-    return guildData
+    let retData = guildData
+    return retData
   }
 }

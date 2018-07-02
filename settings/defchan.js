@@ -7,10 +7,11 @@ module.exports = {
       GData.defaultChannel = message.mentions.channels.first().id
       guilds[index] = GData
       client.proclaimerDb.set('guilds', guilds)
+      message.react('✅')
     } else {
       let defChan = message.guild.channels.get(GData.defaultChannel)
 
-      message.channel.send(`The current default channel is : ${defChan.name || `not set`}`)
+      message.channel.send(`The current default channel is : ${defChan ? defChan.name : `not set`}`)
     }
   }
 }

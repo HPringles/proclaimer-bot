@@ -8,7 +8,7 @@ module.exports = {
   },
   run: async (client, message, args) => {
     const authorId = message.author.id
-    let userNotifs = client.proclaimerDb.get('notifs').filter((n) => { return n.author === authorId && ((message.guild && n.guild === message.guild.id) || (!message.guild)) })
+    let userNotifs = client.proclaimerDb.get('notifs').filter((n) => { return !n.finished && n.author === authorId && ((message.guild && n.guild === message.guild.id) || (!message.guild)) })
     // console.log(userNotifs)
     if (userNotifs.length === 0) return message.channel.send('No notifs found!')
 

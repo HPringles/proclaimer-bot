@@ -8,9 +8,9 @@ module.exports = {
     console.log(client.proclaimerDb.set('notifs', notifs))
   },
   create: (client, message, args) => {
-    if (((args[1] && args[1].startsWith('#')) && args[2]) || args[1]) {
+    if (((args[1] && (args[1].startsWith('#') || args[1].toLowerCase() === 'dm') && args[2])) || args[1]) {
       let word = message.mentions.channels ? args[2] : args[1]
-      let channel = message.mentions.channels.first() ? message.mentions.channels.first().id : message.channel.id
+      let channel = message.mentions.channels.first() ? message.mentions.channels.first().id : args[1].toLowerCase() === 'dm' ? 'dm' : message.channel.id
       console.log(word)
       if (!client.proclaimerDb.get('messagepatterns').find((m) => {
         return m.author === message.author.id && m.word === word
@@ -18,7 +18,8 @@ module.exports = {
         console.log('here')
         client.proclaimerDb.push('messagepatterns', {
           author: message.author.id,
-          word: word
+          word: word,
+          guild: message.guild.id
         })
         if (!client.proclaimerDb.get('notifs').find((n) => {
           return n.type === 'messagepattern' && n.author === message.author.id
@@ -48,7 +49,7 @@ module.exports = {
     return new Discord.RichEmbed()
       .setTitle('Notif - Message Pattern')
       .addField('Words', words)
-      .addField('Channel', client.channels.get(n.channel).name || 'DM')
+      .addField('Channel', client.channels.get(n.channel) ? client.channels.get(n.channel).name : 'DM')
       .addField('Warning!', `To delete individual words from this list, use \`${client.proclaimerDb.get('guilds').find(g => { return g.id === n.guild }).prefix}deletepattern\` `)
   }
 }

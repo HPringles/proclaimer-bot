@@ -14,6 +14,8 @@ const provider = new EnmapMongo({
 const client = new Discord.Client()
 client.config = config
 client.proclaimerDb = new Enmap({provider: provider})
+client.proclaimerUsers = new Enmap({provider: new EnmapMongo({name: 'proclaimer-users-test', dbName: config.dbname, url: config.dbaddr})})
+client.proclaimerUsers.defer.then(() => {})
 client.proclaimerDb.defer.then(() => {
   if (!client.proclaimerDb.has('notifs')) {
     client.proclaimerDb.set('notifs', [])
@@ -24,10 +26,7 @@ client.proclaimerDb.defer.then(() => {
   if (!client.proclaimerDb.has('guilds')) {
     client.proclaimerDb.set('guilds', [])
   }
-  
 })
-
-
 
 client.numNotifChecks = 0
 
@@ -75,5 +74,4 @@ fs.readdir('./settings/', (err, files) => {
     client.settingsCmds.set(settingName, props)
   })
 })
-
 client.login(config.token)

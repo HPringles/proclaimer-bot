@@ -1,0 +1,22 @@
+notifs:
+  ✔ implement a method to create and destroy messagepattern notifs WITHOUT creating/destroying a notif @done (2018-6-14 15:27:49)
+  ✔ edit the structure of messagepattern objects to include the guild they reside in. @done (2018-7-2 18:04:50)
+  ✔ Allow a -dm(or something) option to send the message to the user's DM instead of to a named channel @done (2018-7-2 18:04:50)
+  ☐ implement other notification types
+    ☐ github
+    ☐ facebook(?)
+    ☐ twitter(?)
+    ☐ email(gmail, zoho-mail, outlook, more if possible)
+  ☐ implement method for logging in a getting a token for each site(assuming all run oauth, if not implement something for that)
+  ☐ allow a graphical(npm style questions) method to set up notifs, 
+    e.g +addnotif time - bot responds with - "when do you want to be notifed"(or similar)
+
+
+Bot settings:
+  ✔ implement the get settings method(+set) @done (2018-6-14 15:50:36)
+  ✔ implement methods to set the following settings. @done (2018-7-1 20:46:28)
+    ✔ prefix @done (2018-6-14 15:50:23)
+    ✔ default channel @done (2018-6-14 16:24:17)
+    ✔ admin role(s) @done (2018-7-1 20:46:11)
+      ☐ fix admin roles for a new server(make it so that if there are no admin roles, all users can run all commands)
+  ☐ implement a reset settings option(reset to default - no default channel, no admin roles, prefix of +)

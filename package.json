@@ -4,11 +4,15 @@
   "author": "Harry Ingles(HPringles)",
   "license": "ISC",
   "name": "proclaimer-bot",
+  "scripts": {
+    "start": "node ."
+  },
   "repository": {
     "type": "git",
     "url": "git@github.com:HPringles/proclaimer-bot.git"
   },
   "dependencies": {
+    "@octokit/rest": "^15.9.4",
     "discord.js": "^11.3.2",
     "enmap": "^2.6.2",
     "enmap-mongo": "^2.0.1",
