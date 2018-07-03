@@ -13,7 +13,7 @@ module.exports = {
       return setType.run(client, message, args)
     } else {
       let embed = new Discord.RichEmbed().setTitle('Settings')
-
+      console.log(guildData.enabledModules)
       for (let p in guildData) {
         let fieldData = guildData[p]
         if (p === 'defaultChannel' && (guildData[p] !== undefined || guildData[p] !== null)) {

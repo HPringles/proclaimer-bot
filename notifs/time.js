@@ -27,7 +27,7 @@ module.exports = {
 
       if (args[2].startsWith('#')) {
         console.log('starts with #')
-        channel = message.mentions.channels.first()
+        channel = message.mentions.channels.first().id
         args.splice(0, 3)
         chanMessage = args.join(' ')
       } else if (args[2].toLowerCase() === 'dm') {
@@ -40,18 +40,20 @@ module.exports = {
       }
 
       if (message.mentions.channels.first()) {
-        channel = message.mentions.channels.first()
+        channel = message.mentions.channels.first().id
       }
 
       if (channel === undefined) {
-        channel = message.channel
-      }
+        let gu = client.proclaimerDb.get('guilds').find(g => { return g.id === message.guild.id })
 
+        channel = gu.defaultChannel ? gu.defaultChannel : message.channel.id
+      }
+      console.log(channel)
       let notifObj = {
         type: 'time',
         remindTime: remindTime,
         message: chanMessage,
-        channel: channel === 'dm' ? channel : channel.id,
+        channel: channel,
         guild: message.guild ? message.guild.id : 'None',
         author: message.author.id
 
